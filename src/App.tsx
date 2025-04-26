@@ -1,13 +1,13 @@
-
-import './App.css'
+import Wall from "./components/Wall"
 
 function App() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+      <div className="min-h-screen bg-gray-100 p-6">
+        <h1 className="text-3xl font-bold mb-4">Sticky Notes Wall</h1>
+        <Wall />
+      </div>
     </>
   )
 }
