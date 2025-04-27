@@ -52,7 +52,7 @@ export default function AddNote({ onAddNote, onCloseForm }: Props) {
         onChange={(e) => setDeadline(e.target.value)}
       />
       <button
-        className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1 rounded"
+        className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1 rounded cursor-pointer"
         onClick={addNoteHandler}
       >
         Add

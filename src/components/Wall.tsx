@@ -19,6 +19,14 @@ export default function Wall({ }: Props) {
         setToggleForm(false);
     }
 
+    const handleUpdateNote = (updatedNote: NoteType) => {
+        setNotes((prevNotes) =>
+            prevNotes.map((note) =>
+                note.id === updatedNote.id ? updatedNote : note
+            )
+        );
+    };
+
     useEffect(() => {
         const storedNotes = localStorage.getItem("stickyNotes");
         if (storedNotes) {
@@ -39,7 +47,7 @@ export default function Wall({ }: Props) {
     return (
         <div>
             <button
-                className="text-purple-600 hover:text-purple-700 text-[25px] rounded mb-4"
+                className="text-purple-600 hover:text-purple-700 text-[25px] rounded mb-4 cursor-pointer"
                 onClick={() => setToggleForm(!toggleForm)}
             >
                 {toggleForm ? <BsXCircleFill /> : <BsPlusCircleFill />}
@@ -49,7 +57,7 @@ export default function Wall({ }: Props) {
 
             <div className="grid grid-cols-1 gap-4">
                 {notes.map((note) => (
-                    <Note key={note.id} note={note} />
+                    <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} />
                 ))}
             </div>
         </div>
