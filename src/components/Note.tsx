@@ -8,6 +8,9 @@ import { BsCalendar2Event } from "react-icons/bs";
 import { BsCalendar4Range } from "react-icons/bs";
 import { BsCalendar2X } from "react-icons/bs";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
 interface Props {
     note: NoteType;
     onUpdateNote: (updatedNote: NoteType) => void;
@@ -20,6 +23,23 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     const [deadline, setDeadline] = useState<string>(note.deadline.toISOString().split("T")[0]);
 
     const isDeadlineReached = new Date(note.deadline) <= new Date();
+
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging
+    } = useSortable({ id: note.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        margin: "10px",
+        zIndex: isDragging ? "100" : "auto",
+        opacity: isDragging ? 0.3 : 1
+    };
 
     const handleSaveNote = () => {
         const updatedNote = {
@@ -42,11 +62,11 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     }
 
     return (
-        <div className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"}`}>
+        <div ref={setNodeRef} style={style} className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"}`}>
             <div className={`flex justify-between items-center px-4 py-2 rounded rounded-b-none ${isDeadlineReached ? "bg-red-100" : " bg-purple-100"}`}>
-                <div>
+                <button {...listeners} {...attributes} >
                     <BsArrowsMove className="text-purple-600 hover:text-purple-700 text-[20px]" />
-                </div>
+                </button>
                 <div>
                     {
                         isEditMode

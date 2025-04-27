@@ -4,6 +4,8 @@ import AddNote from "./AddNote";
 import { NoteType } from "../types/note";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { BsXCircleFill } from "react-icons/bs";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
 
 type Props = Record<string, never>;
 
@@ -32,6 +34,28 @@ export default function Wall({ }: Props) {
         )
     }
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates
+        })
+    );
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+
+        if (!over) return;
+
+        if (active.id !== over.id) {
+            setNotes((prevNotes) => {
+                const oldIndex = prevNotes.findIndex((note) => note.id === active.id);
+                const newIndex = prevNotes.findIndex((note) => note.id === over.id);
+
+                return arrayMove(prevNotes, oldIndex, newIndex);
+            });
+        }
+    };
+
     useEffect(() => {
         const storedNotes = localStorage.getItem("stickyNotes");
         if (storedNotes) {
@@ -59,12 +83,19 @@ export default function Wall({ }: Props) {
             </button>
 
             {toggleForm && <AddNote onAddNote={handleAddNote} onCloseForm={handleCloseForm} />}
-
-            <div className="grid grid-cols-1 gap-4">
-                {notes.map((note) => (
-                    <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} onDeleteNote={handleDeleteNote} />
-                ))}
-            </div>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <div className=" flex flex-wrap">
+                    <SortableContext items={notes} strategy={rectSortingStrategy}>
+                        {notes.map((note) => (
+                            <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} onDeleteNote={handleDeleteNote} />
+                        ))}
+                    </SortableContext>
+                </div>
+            </DndContext>
         </div>
     );
 }
