@@ -11,9 +11,10 @@ import { BsCalendar2X } from "react-icons/bs";
 interface Props {
     note: NoteType;
     onUpdateNote: (updatedNote: NoteType) => void;
+    onDeleteNote: (deleteNote: NoteType) => void
 }
 
-export default function Note({ note, onUpdateNote }: Props) {
+export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [description, setDescription] = useState<string>(note.description);
     const [deadline, setDeadline] = useState<string>(note.deadline.toISOString().split("T")[0]);
@@ -34,6 +35,10 @@ export default function Note({ note, onUpdateNote }: Props) {
         setDescription(note.description);
         setDeadline(note.deadline.toISOString().split("T")[0]);
         setIsEditMode(false);
+    }
+
+    const handleDeleteNote = () => {
+        onDeleteNote(note);
     }
 
     return (
@@ -59,7 +64,10 @@ export default function Note({ note, onUpdateNote }: Props) {
                             </button>
                     }
 
-                    <button className={` p-1 me-1 text-red-600 hover:text-red-700 text-[20px] rounded cursor-pointer`}>
+                    <button
+                        className={` p-1 me-1 text-red-600 hover:text-red-700 text-[20px] rounded cursor-pointer`}
+                        onClick={handleDeleteNote}
+                    >
                         <BsTrash3 />
                     </button>
                 </div>

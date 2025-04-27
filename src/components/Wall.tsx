@@ -27,6 +27,11 @@ export default function Wall({ }: Props) {
         );
     };
 
+    const handleDeleteNote = (deleteNote: NoteType) => {
+        setNotes((prevNotes) => prevNotes.filter((prevNote) => prevNote.id !== deleteNote.id)
+        )
+    }
+
     useEffect(() => {
         const storedNotes = localStorage.getItem("stickyNotes");
         if (storedNotes) {
@@ -57,7 +62,7 @@ export default function Wall({ }: Props) {
 
             <div className="grid grid-cols-1 gap-4">
                 {notes.map((note) => (
-                    <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} />
+                    <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} onDeleteNote={handleDeleteNote} />
                 ))}
             </div>
         </div>
