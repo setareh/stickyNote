@@ -38,7 +38,8 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
         transition,
         margin: "10px",
         zIndex: isDragging ? "100" : "auto",
-        opacity: isDragging ? 0.3 : 1
+        opacity: isDragging ? 0.3 : 1,
+        touchAction: 'none',
     };
 
     const handleSaveNote = () => {
@@ -64,7 +65,7 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     return (
         <div ref={setNodeRef} style={style} className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"}`}>
             <div className={`flex justify-between items-center px-4 py-2 rounded rounded-b-none ${isDeadlineReached ? "bg-red-100" : " bg-purple-100"}`}>
-                <button {...listeners} {...attributes} >
+                <button {...listeners} {...attributes} className={`cursor: ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}>
                     <BsArrowsMove className="text-purple-600 hover:text-purple-700 text-[20px]" />
                 </button>
                 <div>
