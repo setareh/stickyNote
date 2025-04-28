@@ -131,22 +131,24 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
 
                     </div>
             }
-            <div className={`flex flex-col justify-between px-4 pt-2 py-4 `}>
+            <div className={` flex flex-col justify-between px-4 pt-2 py-4 `}>
                 <hr className={`my-2 ${isDeadlineReached ? " border-red-100" : " border-purple-100"}`} />
-                <div className="flex justify-between items-center P-2">
+                <div className="relative group flex justify-between items-center P-2">
                     <div className="flex items-center text-sm text-gray-700">
                         <BsCalendar2Event className="me-1" />
                         <span>
                             {new Date(note.createdAt).toLocaleDateString()}
                         </span>
+                        <span className="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 bottom-3 left-10 transform -translate-x-1/2 mb-2 bg-gray-600 text-white text-sm rounded-lg px-3 py-1 transition-opacity duration-300" >Create</span>
                     </div>
                 </div>
-                <div className={`flex items-center text-sm  P-2 ${isDeadlineReached ? 'text-red-700' : 'text-gray-800'}`}>
+                <div className={`relative group flex items-center text-sm  P-2 ${isDeadlineReached ? 'text-red-700' : 'text-gray-800'}  `}>
                     {
                         isDeadlineReached
                             ? <BsCalendar2X className="me-1" />
                             : <BsCalendar4Range className="me-1" />
                     }
+                    <span className="absolute invisible opacity-0 group-hover:visible group-hover:opacity-100 bottom-3 left-10 transform -translate-x-1/2 mb-2 bg-gray-600 text-white text-sm rounded-lg px-3 py-1 transition-opacity duration-300" >Deadline</span>
                     {new Date(note.deadline).toLocaleDateString()}
                 </div>
             </div>
