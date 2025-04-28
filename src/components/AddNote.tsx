@@ -10,12 +10,15 @@ type Props = {
 export default function AddNote({ onAddNote, onCloseForm }: Props) {
   const [description, setDescription] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
+  const [isError, setIsError] = useState<boolean>(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const today = new Date().toISOString().split("T")[0];
+
   const addNoteHandler = () => {
     if (!description || !deadline) {
-      alert("Please fill in both fields.");
+      setIsError(true);
       return;
     }
     const newNote = {
@@ -44,13 +47,17 @@ export default function AddNote({ onAddNote, onCloseForm }: Props) {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         ref={textareaRef}
+        required
       />
       <input
         type="date"
         className="border-0 focus-visible:outline-0 px-2 py-1 rounded"
         value={deadline}
         onChange={(e) => setDeadline(e.target.value)}
+        required
+        min={today}
       />
+      {isError && <p className="text-red-600 text-sm">Please fill in both fields.</p>}
       <button
         className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1 rounded cursor-pointer"
         onClick={addNoteHandler}
