@@ -36,14 +36,13 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
-        margin: "10px",
         zIndex: isDragging ? "100" : "auto",
         opacity: isDragging ? 0.3 : 1,
         touchAction: 'none',
     };
 
-    const handleSaveNote = () => {
-        const updatedNote = {
+    const handleSaveNote = (): void => {
+        const updatedNote: NoteType = {
             ...note,
             description: description,
             deadline: new Date(deadline),
@@ -52,18 +51,18 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
         setIsEditMode(false);
     };
 
-    const handleCancel = () => {
+    const handleCancel = (): void => {
         setDescription(note.description);
         setDeadline(note.deadline.toISOString().split("T")[0]);
         setIsEditMode(false);
     }
 
-    const handleDeleteNote = () => {
+    const handleDeleteNote = (): void => {
         onDeleteNote(note);
     }
 
     return (
-        <div ref={setNodeRef} style={style} className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"}`}>
+        <div ref={setNodeRef} style={style} className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"} m-2`}>
             <div className={`flex justify-between items-center px-4 py-2 rounded rounded-b-none ${isDeadlineReached ? "bg-red-100" : " bg-purple-100"}`}>
                 <button {...listeners} {...attributes} className={`cursor: ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}>
                     <BsArrowsMove className="text-purple-600 hover:text-purple-700 text-[20px]" />

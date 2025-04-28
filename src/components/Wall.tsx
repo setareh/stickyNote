@@ -13,15 +13,15 @@ export default function Wall({ }: Props) {
     const [notes, setNotes] = useState<NoteType[]>([]);
     const [toggleForm, setToggleForm] = useState<boolean>(false);
 
-    const handleAddNote = (note: NoteType) => {
+    const handleAddNote = (note: NoteType): void => {
         setNotes((prevNotes) => [...prevNotes, note]);
     };
 
-    const handleCloseForm = () => {
+    const handleCloseForm = (): void => {
         setToggleForm(false);
     }
 
-    const handleUpdateNote = (updatedNote: NoteType) => {
+    const handleUpdateNote = (updatedNote: NoteType): void => {
         setNotes((prevNotes) =>
             prevNotes.map((note) =>
                 note.id === updatedNote.id ? updatedNote : note
@@ -29,7 +29,7 @@ export default function Wall({ }: Props) {
         );
     };
 
-    const handleDeleteNote = (deleteNote: NoteType) => {
+    const handleDeleteNote = (deleteNote: NoteType): void => {
         setNotes((prevNotes) => prevNotes.filter((prevNote) => prevNote.id !== deleteNote.id)
         )
     }
@@ -41,7 +41,7 @@ export default function Wall({ }: Props) {
         })
     );
 
-    const handleDragEnd = (event: DragEndEvent) => {
+    const handleDragEnd = (event: DragEndEvent): void => {
         const { active, over } = event;
 
         if (!over) return;
@@ -59,7 +59,7 @@ export default function Wall({ }: Props) {
     useEffect(() => {
         const storedNotes = localStorage.getItem("stickyNotes");
         if (storedNotes) {
-            setNotes(JSON.parse(storedNotes).map((note: any) => ({
+            setNotes(JSON.parse(storedNotes).map((note: NoteType) => ({
                 ...note,
                 createdAt: new Date(note.createdAt),
                 deadline: new Date(note.deadline),
@@ -70,13 +70,15 @@ export default function Wall({ }: Props) {
     useEffect(() => {
         if (notes.length > 0) {
             localStorage.setItem("stickyNotes", JSON.stringify(notes));
+        } else {
+            localStorage.removeItem("stickyNotes");
         }
     }, [notes]);
 
     return (
         <div>
             <button
-                className="text-purple-600 hover:text-purple-700 text-[25px] rounded mb-4 cursor-pointer"
+                className="text-purple-600 hover:text-purple-700 text-[25px] rounded mb-4 cursor-pointer ms-2"
                 onClick={() => setToggleForm(!toggleForm)}
             >
                 {toggleForm ? <BsXCircleFill /> : <BsPlusCircleFill />}

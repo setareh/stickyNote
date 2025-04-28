@@ -21,7 +21,7 @@ export default function AddNote({ onAddNote, onCloseForm }: Props) {
       setIsError(true);
       return;
     }
-    const newNote = {
+    const newNote: NoteType = {
       id: uuidv4(),
       description: description,
       createdAt: new Date(),
@@ -40,7 +40,7 @@ export default function AddNote({ onAddNote, onCloseForm }: Props) {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 mb-4 w-56 bg-purple-200 p-4 rounded">
+    <div className="flex flex-col gap-2 mb-4 w-56 bg-purple-200 p-4 rounded ms-2">
       <textarea
         className="border-0 px-2 py-1 h- rounded focus-visible:outline-0"
         placeholder="Enter note..."
