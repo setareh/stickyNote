@@ -84,7 +84,7 @@ export default function Wall({ }: Props) {
                 {toggleForm ? <BsXCircleFill /> : <BsPlusCircleFill />}
             </button>
 
-            {toggleForm && <AddNote onAddNote={handleAddNote} onCloseForm={handleCloseForm} />}
+            <AddNote toggleForm={toggleForm} onAddNote={handleAddNote} onCloseForm={handleCloseForm} />
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}

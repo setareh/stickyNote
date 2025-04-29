@@ -5,9 +5,10 @@ import { NoteType } from "../types/note";
 type Props = {
   onAddNote: (note: NoteType) => void;
   onCloseForm: () => void;
+  toggleForm: boolean;
 };
 
-export default function AddNote({ onAddNote, onCloseForm }: Props) {
+export default function AddNote({ onAddNote, onCloseForm, toggleForm }: Props) {
   const [description, setDescription] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
@@ -39,8 +40,16 @@ export default function AddNote({ onAddNote, onCloseForm }: Props) {
     }
   }, []);
 
+  useEffect(() => {
+    setDeadline('');
+    setIsError(false);
+    setDescription('');
+
+  }, [toggleForm])
+
   return (
-    <div className="flex flex-col gap-2 mb-4 w-56 bg-purple-200 p-4 rounded ms-2">
+    <div className={`flex flex-col  w-56 bg-purple-200 rounded ms-2 transform  transition-all  duration-300 ease-in-out ${toggleForm ? 'max-h-[500px] opacity-100 scale-100 overflow-visible gap-2 mb-4 p-4' : 'max-h-0 opacity-0 scale-90 overflow-hidden gap-0 mb-0 p-0 pointer-events-none'
+      }`}>
       <textarea
         className="border-0 px-2 py-1 h- rounded focus-visible:outline-0"
         placeholder="Enter note..."
