@@ -21,6 +21,7 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [description, setDescription] = useState<string>(note.description);
     const [deadline, setDeadline] = useState<string>(note.deadline.toISOString().split("T")[0]);
+    const [isDelete, setIsDelete] = useState<boolean>(false);
 
     const isDeadlineReached = new Date(note.deadline) <= new Date();
 
@@ -62,7 +63,7 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
     }
 
     return (
-        <div ref={setNodeRef} style={style} className={`w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"} m-2`}>
+        <div ref={setNodeRef} style={style} className={`relative w-56  rounded  ${isDeadlineReached ? "bg-red-200" : " bg-purple-200"} m-2`}>
             <div className={`flex justify-between items-center px-4 py-2 rounded rounded-b-none ${isDeadlineReached ? "bg-red-100" : " bg-purple-100"}`}>
                 <button {...listeners} {...attributes} className={`cursor: ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}>
                     <BsArrowsMove className="text-purple-600 hover:text-purple-700 text-[20px]" />
@@ -86,12 +87,27 @@ export default function Note({ note, onUpdateNote, onDeleteNote }: Props) {
 
                     <button
                         className={` p-1 me-1 text-red-600 hover:text-red-700 text-[20px] rounded cursor-pointer`}
-                        onClick={handleDeleteNote}
+                        onClick={() => setIsDelete(!isDelete)}
                     >
                         <BsTrash3 />
                     </button>
                 </div>
             </div>
+            {
+                isDelete &&
+                <div className={`absolute text-center top-11 w-full p-4 rounded bg-purple-600`}>
+                    <div className="mb-2 text-white">Are you sure?</div>
+                    <div className="flex justify-center">
+                        <button className="bg-purple-400 hover:bg-purple-500 text-white px-4 py-1 me-2 rounded cursor-pointer" onClick={() => setIsDelete(false)}>
+                            Cancel
+                        </button>
+                        <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded cursor-pointer" onClick={handleDeleteNote}>
+                            Yes
+                        </button>
+                    </div>
+                </div>
+            }
+
             {
                 isEditMode
                     ? <div className="p-4 pb-0 flex flex-col gap-2">
