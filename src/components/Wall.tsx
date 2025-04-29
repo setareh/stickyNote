@@ -90,7 +90,7 @@ export default function Wall({ }: Props) {
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
             >
-                <div className=" flex flex-wrap">
+                <div className="flex flex-wrap justify-center md:justify-start">
                     <SortableContext items={notes} strategy={rectSortingStrategy}>
                         {notes.map((note) => (
                             <Note key={note.id} note={note} onUpdateNote={handleUpdateNote} onDeleteNote={handleDeleteNote} />
